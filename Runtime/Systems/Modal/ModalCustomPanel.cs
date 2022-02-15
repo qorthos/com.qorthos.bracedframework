@@ -11,16 +11,16 @@ namespace BracedFramework
         public GameEventChannel GameEventChannel;
         public Animator Animator;
 
-        [SerializeField] UnityEvent onFinished;
-        bool isShown = false;
+        [SerializeField] UnityEvent _onFinished;
+        bool _isShown = false;
 
-        public UnityEvent OnFinished => onFinished;
 
-        public bool IsShown => isShown;
+        public UnityEvent OnFinished => _onFinished;
+        public bool IsShown => _isShown;
 
         public void StartHide()
         {
-            if (isShown == false)
+            if (_isShown == false)
                 return;
 
             Hide();
@@ -34,7 +34,7 @@ namespace BracedFramework
 
         public virtual void Shown()
         {
-            isShown = true;
+            _isShown = true;
         }
 
         public void Hide()

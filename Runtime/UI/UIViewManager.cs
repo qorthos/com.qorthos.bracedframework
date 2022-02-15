@@ -8,7 +8,7 @@ namespace BracedFramework
     {
         [ReadOnly] [SerializeField] UIViewController activeView;
         [ReadOnly] [SerializeField] UIViewController nextView;
-        [ReadOnly] [SerializeField] bool isBlocked = false;
+        [ReadOnly] [SerializeField] bool _isBlocked = false;
 
 
         public void SetInitial(UIViewController initialView)
@@ -18,13 +18,13 @@ namespace BracedFramework
 
         public void ChangeView(UIViewController next)
         {
-            if (isBlocked)
+            if (_isBlocked)
                 return;
 
             if (activeView == next)
                 return;
 
-            isBlocked = true;
+            _isBlocked = true;
             nextView = next;
             StartCoroutine(ChangeViews());
         }
@@ -47,7 +47,7 @@ namespace BracedFramework
                 //yield return new WaitForSeconds(1.0f);
             }
 
-            isBlocked = false;
+            _isBlocked = false;
             yield return null;
         }
     }

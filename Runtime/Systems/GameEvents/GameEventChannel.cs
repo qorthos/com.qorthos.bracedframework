@@ -12,23 +12,23 @@ namespace BracedFramework
     {
         public static GameEventChannel Instance;
 
-        private Dictionary<Type, IBroadcastEvent> broadcastEventLib;
+        private Dictionary<Type, IBroadcastEvent> _broadcastEventLib;
 
         private void OnEnable()
         {
             Instance = this;
-            broadcastEventLib = new Dictionary<Type, IBroadcastEvent>();
+            _broadcastEventLib = new Dictionary<Type, IBroadcastEvent>();
         }
 
         private void OnDisable()
         {
             Instance = null;
-            foreach (IBroadcastEvent broadcastEvent in broadcastEventLib.Values)
+            foreach (IBroadcastEvent broadcastEvent in _broadcastEventLib.Values)
             {
                 broadcastEvent.Clear();
             }
 
-            broadcastEventLib.Clear();
+            _broadcastEventLib.Clear();
         }
 
         public void Broadcast<T>(T args) where T : EventArgs
@@ -36,37 +36,37 @@ namespace BracedFramework
             var type = typeof(T);
 
             Debug.Log($"Broadcasting: {type}");
-            if (broadcastEventLib.ContainsKey(type) == false)
+            if (_broadcastEventLib.ContainsKey(type) == false)
             {
-                broadcastEventLib.Add(type, new BroadcastEvent<T>());
+                _broadcastEventLib.Add(type, new BroadcastEvent<T>());
             }
 
-            ((BroadcastEvent<T>)broadcastEventLib[type]).Invoke(args);
+            ((BroadcastEvent<T>)_broadcastEventLib[type]).Invoke(args);
         }
 
         public void RegisterListener<T>(UnityAction<T> callback) where T : EventArgs
         {
             var type = typeof(T);
 
-            if (broadcastEventLib.ContainsKey(type) == false)
+            if (_broadcastEventLib.ContainsKey(type) == false)
             {
-                broadcastEventLib.Add(type, new BroadcastEvent<T>());
+                _broadcastEventLib.Add(type, new BroadcastEvent<T>());
             }
 
-            ((BroadcastEvent<T>)broadcastEventLib[type]).AddListener(callback);
+            ((BroadcastEvent<T>)_broadcastEventLib[type]).AddListener(callback);
         }
 
         public void RemoveListener<T>(UnityAction<T> callback) where T : EventArgs
         {
             var type = typeof(T);
 
-            if (broadcastEventLib.ContainsKey(type) == false)
+            if (_broadcastEventLib.ContainsKey(type) == false)
             {
                 Debug.LogError("Attempting to remove a listener from a BroadcastEvent that never existed in the first place?!");
                 return;
             }
 
-            ((BroadcastEvent<T>)broadcastEventLib[type]).RemoveListener(callback);
+            ((BroadcastEvent<T>)_broadcastEventLib[type]).RemoveListener(callback);
         }
 
     }

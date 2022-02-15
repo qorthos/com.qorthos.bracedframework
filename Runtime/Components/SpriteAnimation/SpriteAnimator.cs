@@ -13,37 +13,27 @@ namespace BracedFramework
         public MeshRenderer MR2;
         public int DefaultTextureIndex;
 
-        private SpriteSequence currentSequence;
-
         public float PPU = 32;
-
-        [SerializeField]
-        [ReadOnly]
-        private string currentSequenceName;
-
-        [SerializeField]
-        [ReadOnly]
-        private float timer = 0;
-
-        [SerializeField]
-        [ReadOnly]
-        private int currentSpriteIndex = -1;
-
         public List<Texture2D> Textures;
         public List<SpriteSequence> Sequences;
 
-        Camera cam;
+        [SerializeField] [ReadOnly] private SpriteSequence _currentSequence;
+        [SerializeField] [ReadOnly] private string _currentSequenceName;
+        [SerializeField] [ReadOnly] private float _timer = 0;
+        [SerializeField] [ReadOnly] private int _currentSpriteIndex = -1;
+
+        Camera _cam;
 
         public event SpriteAnimatorEvent SequenceChanged;
         public event SpriteAnimatorEvent SequenceFinished;
         public event SpriteAnimatorEvent TextureChanged;
 
-        public string CurrentSequenceName { get => currentSequenceName; }
+        public string CurrentSequenceName { get => _currentSequenceName; }
 
         void Start()
         {
             SetTexture(DefaultTextureIndex);
-            cam = Camera.main;
+            _cam = Camera.main;
         }
 
         public void Update()
@@ -52,25 +42,25 @@ namespace BracedFramework
 
             // the rotation needs to be set so that the sprite faces the camera.
             // mr2 is backface, it's flipped 180 degrees so shadows look correct.
-            transform.rotation = Quaternion.AngleAxis(cam.transform.rotation.eulerAngles.y, Vector3.up);
+            transform.rotation = Quaternion.AngleAxis(_cam.transform.rotation.eulerAngles.y, Vector3.up);
         }
 
         public void UpdateSequence()
         {
-            if (currentSequence == null)
+            if (_currentSequence == null)
                 return;
 
-            timer += Time.deltaTime;
+            _timer += Time.deltaTime;
 
-            if (timer >= currentSequence.Milliseconds / 1000f)
+            if (_timer >= _currentSequence.Milliseconds / 1000f)
             {
-                timer -= currentSequence.Milliseconds / 1000f;
-                currentSpriteIndex++;
-                if (currentSpriteIndex >= currentSequence.Indices.Count)
+                _timer -= _currentSequence.Milliseconds / 1000f;
+                _currentSpriteIndex++;
+                if (_currentSpriteIndex >= _currentSequence.Indices.Count)
                 {
-                    if (currentSequence.Repeats)
+                    if (_currentSequence.Repeats)
                     {
-                        currentSpriteIndex = 0;
+                        _currentSpriteIndex = 0;
                     }
                     else
                     {
@@ -79,7 +69,7 @@ namespace BracedFramework
                     }
                 }
 
-                SetTexture(currentSequence.Indices[currentSpriteIndex]);
+                SetTexture(_currentSequence.Indices[_currentSpriteIndex]);
             }
         }
 
@@ -88,8 +78,8 @@ namespace BracedFramework
             float dppu = PPU * 2;
             float flipMulti = 1f;
 
-            if (currentSequence != null)
-                flipMulti = currentSequence.Flip ? -1f : +1f;
+            if (_currentSequence != null)
+                flipMulti = _currentSequence.Flip ? -1f : +1f;
 
             var tex = Textures[newIndex];
             MR.material.SetTexture("_BaseMap", tex);
@@ -123,11 +113,11 @@ namespace BracedFramework
         {
             var sequence = Sequences.FirstOrDefault(x => x.Name == name);
 
-            currentSequence = sequence;
-            currentSequenceName = name;
+            _currentSequence = sequence;
+            _currentSequenceName = name;
 
-            timer = 0;
-            currentSpriteIndex = 0;
+            _timer = 0;
+            _currentSpriteIndex = 0;
 
             if (sequence == null)
             {
@@ -137,8 +127,8 @@ namespace BracedFramework
             }
             else
             {
-                currentSpriteIndex = currentSequence.Indices[0];
-                SetTexture(currentSpriteIndex);
+                _currentSpriteIndex = _currentSequence.Indices[0];
+                SetTexture(_currentSpriteIndex);
             }
         }
     }

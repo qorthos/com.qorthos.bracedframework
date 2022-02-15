@@ -5,11 +5,12 @@ using UnityEngine;
 namespace BracedFramework
 {
     public class Openable : MonoBehaviour
-    {
-        [ReadOnly] [SerializeField] bool isOpen = false;
+    {        
         public Animator Animator;
-        public bool IsOpen { get => isOpen; private set => isOpen = value; }
+        [ReadOnly] [SerializeField] bool _isOpen = false;
 
+        public bool IsOpen { get => _isOpen; private set => _isOpen = value; }
+        
 
         public void Close()
         {

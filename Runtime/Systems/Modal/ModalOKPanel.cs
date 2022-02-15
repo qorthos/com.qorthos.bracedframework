@@ -13,15 +13,15 @@ namespace BracedFramework
         public TMPro.TMP_Text ButtonText;
         public Animator Animator;
 
-        [SerializeField] UnityEvent onFinished;
-        bool isShown = false;
+        [SerializeField] UnityEvent _onFinished;
+        bool _isShown = false;
 
-        public bool IsShown => isShown;
-        public UnityEvent OnFinished => onFinished;
+        public bool IsShown => _isShown;
+        public UnityEvent OnFinished => _onFinished;
 
         public void Button_Click()
         {
-            if (isShown == false)
+            if (_isShown == false)
                 return;
 
             Hide();
@@ -41,7 +41,7 @@ namespace BracedFramework
 
         public void Shown()
         {
-            isShown = true;
+            _isShown = true;
         }
 
         public void Hide()

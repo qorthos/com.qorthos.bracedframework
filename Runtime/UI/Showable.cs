@@ -6,9 +6,9 @@ namespace BracedFramework
 {
     public class Showable : MonoBehaviour, IShowable
     {
-        [ReadOnly] [SerializeField] bool isShown = false;
+        [ReadOnly] [SerializeField] bool _isShown = false;
         public Animator Animator;
-        public bool IsShown { get => isShown; private set => isShown = value; }
+        public bool IsShown { get => _isShown; private set => _isShown = value; }
 
 
         public virtual void Hide()

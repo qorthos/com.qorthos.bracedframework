@@ -12,12 +12,7 @@ namespace BracedFramework
         public GameEventChannel GameEventChannel;
         public Animator Animator;
 
-        [ReadOnly] [SerializeField] TransitionGEM transition;
-        //public string TargetSceneName;
-        //public TransitionEffectEnum TransitionOut;
-        //public TransitionEffectEnum TransitionIn;
-        //public Action OnClose;
-        //public Action OnReopen;
+        [ReadOnly] [SerializeField] TransitionGEM _cachedTransitionGEM;
 
         private void Awake()
         {
@@ -26,7 +21,7 @@ namespace BracedFramework
 
         private void OnTransition(TransitionGEM arg0)
         {
-            transition = arg0;
+            _cachedTransitionGEM = arg0;
 
 
             switch (arg0.TransitionOutEffect)
@@ -81,17 +76,17 @@ namespace BracedFramework
 
         public void TransitionCloseComplete()
         {
-            transition.OnClose?.Invoke();
+            _cachedTransitionGEM.OnClose?.Invoke();
 
-            if (transition.NewSceneName != "")
+            if (_cachedTransitionGEM.NewSceneName != "")
             {
-                SceneManager.LoadScene(transition.NewSceneName);
+                SceneManager.LoadScene(_cachedTransitionGEM.NewSceneName);
             }
         }
 
         public void TransitionReOpenComplete()
         {
-            transition.OnReopen?.Invoke();
+            _cachedTransitionGEM.OnReopen?.Invoke();
         }
     }
 

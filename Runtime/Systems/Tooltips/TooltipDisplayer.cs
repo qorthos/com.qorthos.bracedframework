@@ -15,11 +15,11 @@ namespace BracedFramework
         public RectTransform RectTransform;
         public RectTransform BackgroundTransform;
         public RectTransform TextTransform;
-        TooltipInfo info;
+        TooltipInfo _info;
 
         public void Set(TooltipInfo info)
         {
-            this.info = info;
+            this._info = info;
             Text.text = info.DisplayText;
 
             Vector2 mousePos = Mouse.current.position.ReadDefaultValue();

@@ -9,8 +9,6 @@ namespace BracedFramework
 {
     public abstract class GameDataContainer : ObservableObject
     {
-
-
         public abstract Value GetValue(string variableName);
         public abstract void SetValue(string variableName, Value value);
     }

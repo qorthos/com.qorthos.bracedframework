@@ -14,7 +14,7 @@ namespace BracedFramework
         public float TimeToPause = 0.5f;
         public float TimeToUnpause = 0.25f;
 
-        [ReadOnly] [SerializeField] PauseStateEnum pauseState = PauseStateEnum.Unpaused;
+        [ReadOnly] [SerializeField] PauseStateEnum _pauseState = PauseStateEnum.Unpaused;
 
 
 
@@ -26,7 +26,7 @@ namespace BracedFramework
 
         private void OnRequestTogglePause(RequestTogglePauseGEM arg0)
         {
-            switch (pauseState)
+            switch (_pauseState)
             {
                 case PauseStateEnum.Unpaused:
                     StartCoroutine(Pause());
@@ -47,7 +47,7 @@ namespace BracedFramework
         private IEnumerator Pause()
         {
             float timer = TimeToPause;
-            pauseState = PauseStateEnum.Pausing;
+            _pauseState = PauseStateEnum.Pausing;
 
             while (timer > 0)
             {
@@ -58,14 +58,14 @@ namespace BracedFramework
             }
 
 
-            pauseState = PauseStateEnum.Paused;
+            _pauseState = PauseStateEnum.Paused;
             GameEventChannel.Broadcast(new GamePausedGEM());
         }
 
         private IEnumerator Unpause()
         {
             float timer = TimeToUnpause;
-            pauseState = PauseStateEnum.Unpausing;
+            _pauseState = PauseStateEnum.Unpausing;
             while (timer > 0)
             {
                 timer -= Time.unscaledDeltaTime;
@@ -74,7 +74,7 @@ namespace BracedFramework
                 yield return new WaitForEndOfFrame();
             }
 
-            pauseState = PauseStateEnum.Unpaused;
+            _pauseState = PauseStateEnum.Unpaused;
             GameEventChannel.Broadcast(new GameUnpausedGEM());
         }
     }

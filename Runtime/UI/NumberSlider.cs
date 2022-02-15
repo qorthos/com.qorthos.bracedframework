@@ -15,7 +15,7 @@ namespace BracedFramework
         public ColorDef4 ColorDefs;
         public Slider Slider;
 
-        [SerializeField] private float numberValue = 0;
+        [SerializeField] private float _numberValue = 0;
 
         public float TweenTime = 0.2f;
         public int MaxValue;
@@ -33,24 +33,24 @@ namespace BracedFramework
 
         public float NumberValue
         {
-            get => numberValue;
+            get => _numberValue;
             set
             {
-                FillImage.fillAmount = Mathf.Clamp01(numberValue / MaxValue);
-                FillImage.color = Color.Lerp(ColorDefs.ColorA, ColorDefs.ColorB, Mathf.Clamp01(numberValue / MaxValue));
-                Text.color = Color.Lerp(ColorDefs.ColorC, ColorDefs.ColorD, Mathf.Clamp01(numberValue / MaxValue));
-                Text.text = $"{TextPrefix}{(int)numberValue}";
+                FillImage.fillAmount = Mathf.Clamp01(_numberValue / MaxValue);
+                FillImage.color = Color.Lerp(ColorDefs.ColorA, ColorDefs.ColorB, Mathf.Clamp01(_numberValue / MaxValue));
+                Text.color = Color.Lerp(ColorDefs.ColorC, ColorDefs.ColorD, Mathf.Clamp01(_numberValue / MaxValue));
+                Text.text = $"{TextPrefix}{(int)_numberValue}";
 
-                numberValue = value;
+                _numberValue = value;
             }
         }
 
         private void OnValidate()
         {
-            FillImage.fillAmount = Mathf.Clamp01(numberValue / MaxValue);
-            FillImage.color = Color.Lerp(ColorDefs.ColorA, ColorDefs.ColorB, Mathf.Clamp01(numberValue / MaxValue));
-            Text.color = Color.Lerp(ColorDefs.ColorC, ColorDefs.ColorD, Mathf.Clamp01(numberValue / MaxValue));
-            Text.text = $"{TextPrefix}{(int)numberValue}";
+            FillImage.fillAmount = Mathf.Clamp01(_numberValue / MaxValue);
+            FillImage.color = Color.Lerp(ColorDefs.ColorA, ColorDefs.ColorB, Mathf.Clamp01(_numberValue / MaxValue));
+            Text.color = Color.Lerp(ColorDefs.ColorC, ColorDefs.ColorD, Mathf.Clamp01(_numberValue / MaxValue));
+            Text.text = $"{TextPrefix}{(int)_numberValue}";
         }
     }
 }

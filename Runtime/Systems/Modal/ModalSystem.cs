@@ -13,7 +13,7 @@ namespace BracedFramework
         public GameObject ShownObject;
 
         public GameObject StandardModalOKPrefab;
-        private Action CachedAction;
+        private Action _cachedAction;
 
         // Start is called before the first frame update
         void Start()
@@ -26,7 +26,7 @@ namespace BracedFramework
         private void OnShowModalOK(ShowModalOKGEM arg0)
         {
             FullScreenRayCast.SetActive(true);
-            CachedAction = arg0.OKAction;
+            _cachedAction = arg0.OKAction;
 
             var prefab = arg0.Prefab;
             if (prefab == null)
@@ -43,7 +43,7 @@ namespace BracedFramework
         private void OnShowCustomModel(ShowCustomModalGEM arg0)
         {
             FullScreenRayCast.SetActive(true);
-            CachedAction = arg0.OKAction;
+            _cachedAction = arg0.OKAction;
 
             var prefab = arg0.Prefab;
             ShownObject = Instantiate(prefab, Canvas.transform);
@@ -54,7 +54,7 @@ namespace BracedFramework
 
         private void OnPanelFinished()
         {
-            CachedAction?.Invoke();
+            _cachedAction?.Invoke();
             FullScreenRayCast.SetActive(false);
             Destroy(ShownObject);
         }

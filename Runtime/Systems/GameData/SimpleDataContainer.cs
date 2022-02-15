@@ -7,8 +7,8 @@ namespace BracedFramework
 {
     public abstract class SimpleDataContainer : GameDataContainer
     {
-        protected Dictionary<string, Value> lib = new Dictionary<string, Value>();
-        protected Dictionary<string, SimpleDataContainer> children = new Dictionary<string, SimpleDataContainer>();
+        protected Dictionary<string, Value> _lib = new Dictionary<string, Value>();
+        protected Dictionary<string, SimpleDataContainer> _children = new Dictionary<string, SimpleDataContainer>();
 
         protected abstract Value GetLocalValue(string variableName);
         protected abstract void SetLocalValue(string variableName, Value value);
@@ -21,7 +21,7 @@ namespace BracedFramework
 
         public void AddChild(string name, SimpleDataContainer container)
         {
-            children.Add(name, container);
+            _children.Add(name, container);
         }
 
         public sealed override Value GetValue(string variableName)
@@ -30,9 +30,9 @@ namespace BracedFramework
 
             if (split.Length > 1)
             {
-                if (children.ContainsKey(split[0]))
+                if (_children.ContainsKey(split[0]))
                 {
-                    return children[split[0]].GetValue(split[1]);
+                    return _children[split[0]].GetValue(split[1]);
                 }
                 else
                 {
@@ -41,9 +41,9 @@ namespace BracedFramework
                 }
             }
 
-            if (lib.ContainsKey(variableName))
+            if (_lib.ContainsKey(variableName))
             {
-                return lib[variableName];
+                return _lib[variableName];
             }
             else
             {
@@ -57,9 +57,9 @@ namespace BracedFramework
 
             if (split.Length > 1)
             {
-                if (children.ContainsKey(split[0]))
+                if (_children.ContainsKey(split[0]))
                 {
-                    children[split[0]].SetValue(split[1], value);
+                    _children[split[0]].SetValue(split[1], value);
                 }
                 else
                 {
@@ -68,9 +68,9 @@ namespace BracedFramework
                 }
             }
 
-            if (lib.ContainsKey(variableName))
+            if (_lib.ContainsKey(variableName))
             {
-                lib[variableName] = value;
+                _lib[variableName] = value;
                 Notify(variableName);
             }
             else

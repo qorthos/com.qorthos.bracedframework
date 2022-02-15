@@ -7,20 +7,20 @@ namespace BracedFramework
     [ExecuteInEditMode]
     public class UILookTowardsCamera : MonoBehaviour
     {
-        GameObject camTarget;
+        GameObject _camTarget;
 
         private void Start()
         {
-            camTarget = Camera.main.gameObject;
+            _camTarget = Camera.main.gameObject;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (camTarget == null)
+            if (_camTarget == null)
                 return;
 
-            transform.LookAt(transform.position + camTarget.transform.forward);
+            transform.LookAt(transform.position + _camTarget.transform.forward);
         }
     }
 }

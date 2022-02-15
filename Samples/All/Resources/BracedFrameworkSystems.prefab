@@ -870,7 +870,7 @@ GameObject:
   m_Component:
   - component: {fileID: 264582534050036198}
   m_Layer: 0
-  m_Name: GlobalSystems
+  m_Name: BracedFrameworkSystems
   m_TagString: Startup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

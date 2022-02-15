@@ -12,26 +12,26 @@ namespace BracedFramework
         public TextMeshProUGUI Text;
         public ColorDef4 ColorDefs;
 
-        [SerializeField] private float numberValue = 0;
         public float TweenTime = 0.2f;
         public int MaxValue;
         public string TextPrefix;
 
-        bool hasStarted = false;
+        [SerializeField] private float _numberValue = 0;
+        [ReadOnly][SerializeField] bool _hasStarted = false;
 
         public float NumberValue
         {
-            get => numberValue;
+            get => _numberValue;
             set
             {
-                if (hasStarted)
+                if (_hasStarted)
                 {
                     StopAllCoroutines();
-                    StartCoroutine(TweenValue(numberValue, value));
+                    StartCoroutine(TweenValue(_numberValue, value));
                 }
                 else
                 {
-                    numberValue = value;
+                    _numberValue = value;
                     OnValidate();
                 }
             }
@@ -39,7 +39,7 @@ namespace BracedFramework
 
         void Start()
         {
-            hasStarted = true;
+            _hasStarted = true;
         }
 
         public IEnumerator TweenValue(float initial, float end)
@@ -50,12 +50,12 @@ namespace BracedFramework
             {
                 timer = Mathf.Clamp01(timer - Time.deltaTime);
 
-                numberValue = Mathf.Lerp(initial, end, 1 - timer / TweenTime);
+                _numberValue = Mathf.Lerp(initial, end, 1 - timer / TweenTime);
 
-                FillImage.fillAmount = Mathf.Clamp01(numberValue / MaxValue);
-                FillImage.color = Color.Lerp(ColorDefs.ColorA, ColorDefs.ColorB, Mathf.Clamp01(numberValue / MaxValue));
-                Text.color = Color.Lerp(ColorDefs.ColorC, ColorDefs.ColorD, Mathf.Clamp01(numberValue / MaxValue));
-                Text.text = $"{TextPrefix}{(int)numberValue}";
+                FillImage.fillAmount = Mathf.Clamp01(_numberValue / MaxValue);
+                FillImage.color = Color.Lerp(ColorDefs.ColorA, ColorDefs.ColorB, Mathf.Clamp01(_numberValue / MaxValue));
+                Text.color = Color.Lerp(ColorDefs.ColorC, ColorDefs.ColorD, Mathf.Clamp01(_numberValue / MaxValue));
+                Text.text = $"{TextPrefix}{(int)_numberValue}";
 
 
                 yield return new WaitForEndOfFrame();
@@ -66,10 +66,10 @@ namespace BracedFramework
 
         private void OnValidate()
         {
-            FillImage.fillAmount = Mathf.Clamp01(numberValue / MaxValue);
-            FillImage.color = Color.Lerp(ColorDefs.ColorA, ColorDefs.ColorB, Mathf.Clamp01(numberValue / MaxValue));
-            Text.color = Color.Lerp(ColorDefs.ColorC, ColorDefs.ColorD, Mathf.Clamp01(numberValue / MaxValue));
-            Text.text = $"{TextPrefix}{(int)numberValue}";
+            FillImage.fillAmount = Mathf.Clamp01(_numberValue / MaxValue);
+            FillImage.color = Color.Lerp(ColorDefs.ColorA, ColorDefs.ColorB, Mathf.Clamp01(_numberValue / MaxValue));
+            Text.color = Color.Lerp(ColorDefs.ColorC, ColorDefs.ColorD, Mathf.Clamp01(_numberValue / MaxValue));
+            Text.text = $"{TextPrefix}{(int)_numberValue}";
         }
     }
 }

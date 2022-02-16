@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BracedFramework
 {
-    [CreateAssetMenu(fileName = "SpriteLibrary", menuName = "Data/SpriteLibrary")]
+    [CreateAssetMenu(fileName = "SpriteLibrary", menuName = "Defs/SpriteLibrary")]
     public class SpriteLibrary : ScriptableObject
     {
         public static SpriteLibrary Instance;

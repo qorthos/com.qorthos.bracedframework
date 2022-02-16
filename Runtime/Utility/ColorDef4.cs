@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BracedFramework
 {
-    [CreateAssetMenu(fileName = "ColorDef4", menuName = "Data/ColorDef4")]
+    [CreateAssetMenu(fileName = "ColorDef4", menuName = "Defs/ColorDef4")]
     public class ColorDef4 : ScriptableObject
     {
         public Color ColorA;

@@ -9,7 +9,6 @@ namespace BracedFramework
 {
     public class SpritePlayerController : MonoBehaviour
     {
-        public GameDataChannel GameDataChannel;
         public GameEventChannel GameEventChannel;
         public PlayerInput PlayerInput;
         public SpriteCharacterAnimatorController CharacterAnimatorController;

@@ -1,0 +1,1 @@
+This software imports .kenshape files. This author is not in anyway affiliated with the author of KenShape. Please do not contact Kenney for problems with this software.

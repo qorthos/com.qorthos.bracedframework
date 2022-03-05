@@ -60,17 +60,18 @@ namespace BracedFramework
 
                 // top left is 0,0
                 // bottom left is index 16 (for a 16x16)
-                var offset = new Vector2(-7.5f, -7.5f);
-                float floatSize = jsonObject.size.x;
+                var offset = new Vector2(-jsonObject.size.x / 2f + 0.5f, -jsonObject.size.y / 2f + 0.5f);
+                float floatSize = 16f;
 
                 var newVox = new Kenxel()
                 {
                     Position = new Vector3(
-                        (i / jsonObject.size.x + offset.x) / floatSize,
-                        (i % jsonObject.size.x + offset.y) / floatSize,
+                        -(i / jsonObject.size.y + offset.x) / floatSize,
+                        -(i % jsonObject.size.y + offset.y) / floatSize,
                         0f),
                     Depth = tile.depth,
-                    Rotation = 270 + tile.angle * 90f,
+                    //Rotation = 270 + tile.angle * 90f,
+                    Rotation = 90 + tile.angle * 90f,
                     Shape = tile.shape,
                 };
 
@@ -80,7 +81,6 @@ namespace BracedFramework
             }
             var path = "Packages/com.qorthos.bracedframework/Editor/KenShapeImporter/KenShapeMeshDefs.asset";
             KenShapeMeshDef meshDefs = AssetDatabase.LoadAssetAtPath<KenShapeMeshDef>(path);
-
 
             var newMesh = new Mesh();
 

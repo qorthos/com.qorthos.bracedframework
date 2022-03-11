@@ -98,7 +98,7 @@ namespace BracedFramework
             List<int> indices = new List<int>();
             
             int indexCount = 0;
-            var zOffset = (jsonObject.alignment - 1) / 32f;
+            var zOffset = -(jsonObject.alignment - 1) / 32f;
 
             foreach (var vox in model.Kenxels)
             {

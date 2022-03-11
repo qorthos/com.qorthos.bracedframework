@@ -15,7 +15,8 @@ namespace BracedFramework
     {
         public int[] HDRColors = new int[16];
         public int HDRMultiplier = 2;
-
+        public bool UseSingleBackfaceColor = false;
+        public Color BackfaceColor = Color.grey;
 
         [System.Serializable]
         public class KenShapeRootObject
@@ -97,6 +98,7 @@ namespace BracedFramework
             List<int> indices = new List<int>();
             
             int indexCount = 0;
+            var zOffset = (jsonObject.alignment - 1) / 32f;
 
             foreach (var vox in model.Kenxels)
             {
@@ -109,9 +111,20 @@ namespace BracedFramework
                     var newVertex = rotation * vertex;
                     
                     newVertex += vox.Position;
+                    newVertex.z += zOffset;
                     newVertex.z *= 1 + (0.5f * (vox.Depth - 1f) * model.DepthMultiplier);
+
+                    if (newVertex.z <=0 && UseSingleBackfaceColor)
+                    {
+                        colors.Add(BackfaceColor);
+                    }
+                    else
+                    {
+                        colors.Add(vox.Color);
+                    }
+
                     vertices.Add(newVertex);
-                    colors.Add(vox.Color);
+                    
                     uvs.Add(new Vector2(1 + vox.HDRLevel, 0));
                 }
 

@@ -18,12 +18,17 @@ namespace BracedFramework
         SerializedProperty m_HDRColors;
         SerializedProperty m_HDRMultiplier;
 
+        SerializedProperty m_UseSingleBackfaceColor;
+        SerializedProperty m_BackfaceColor;
+
         public override void OnEnable()
         {
             base.OnEnable();
             // Once in OnEnable, retrieve the serializedObject property and store it.
             m_HDRColors = serializedObject.FindProperty("HDRColors");
             m_HDRMultiplier = serializedObject.FindProperty("HDRMultiplier");
+            m_UseSingleBackfaceColor = serializedObject.FindProperty("UseSingleBackfaceColor");
+            m_BackfaceColor = serializedObject.FindProperty("BackfaceColor");
         }
 
         public override void OnInspectorGUI()
@@ -33,6 +38,8 @@ namespace BracedFramework
 
             EditorGUILayout.PropertyField(m_HDRColors);
             EditorGUILayout.PropertyField(m_HDRMultiplier);
+            EditorGUILayout.PropertyField(m_UseSingleBackfaceColor);
+            EditorGUILayout.PropertyField(m_BackfaceColor);
 
             // Apply the changes so Undo/Redo is working
             serializedObject.ApplyModifiedProperties();

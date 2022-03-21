@@ -1,6 +1,6 @@
 {
   "name": "com.qorthos.bracedframework",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "displayName": "Braced Framework",
   "description": "A Framework for games by Qorthos",
   "type": "library"

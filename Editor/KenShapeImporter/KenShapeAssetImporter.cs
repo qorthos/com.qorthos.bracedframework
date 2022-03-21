@@ -13,10 +13,11 @@ namespace BracedFramework
     [ScriptedImporter(1, "kenshape")]
     public class KenShapeAssetImporter : ScriptedImporter
     {
-        public int[] HDRColors = new int[16];
-        public int HDRMultiplier = 2;
-        public bool UseSingleBackfaceColor = false;
-        public Color BackfaceColor = Color.grey;
+        public bool RotateAxis;
+        public int[] HDRIntensities = new int[16];
+
+        public bool UseBackfaceColor;
+        public Color BackfaceColor;
 
         [System.Serializable]
         public class KenShapeRootObject
@@ -57,6 +58,9 @@ namespace BracedFramework
             KenShapeModel model = ScriptableObject.CreateInstance<KenShapeModel>();
             model.Size = new Vector3Int(jsonObject.size.x, jsonObject.size.y, 0);
             model.DepthMultiplier = jsonObject.depthMultiplier /100f;
+            model.UseBackfaceColor = UseBackfaceColor;
+            model.BackfaceColor = BackfaceColor;
+            var zOffset = -(jsonObject.alignment - 1) / 32f;
 
             for (int i = 0; i < jsonObject.tiles.Length; i++)
             {
@@ -69,24 +73,37 @@ namespace BracedFramework
                 var offset = new Vector2(-jsonObject.size.x / 2f + 0.5f, -jsonObject.size.y / 2f + 0.5f);
                 float floatSize = 16f;
 
-                var newVox = new Kenxel()
+                var newVox = new KenxelData()
                 {
                     Position = new Vector3(
                         -(i / jsonObject.size.y + offset.x) / floatSize,
                         -(i % jsonObject.size.y + offset.y) / floatSize,
-                        0f),
-                    Depth = tile.depth,
+                        zOffset),
+                    Depth = 1 + ((tile.depth - 1f) * model.DepthMultiplier),
                     ColorIndex = tile.color,
                     //Rotation = 270 + tile.angle * 90f,
                     Rotation = 90 + tile.angle * 90f,
                     Shape = tile.shape,
-                    HDRLevel = 0 + HDRColors[tile.color] * HDRMultiplier,
+                    HDRIntensity = 0 + HDRIntensities[tile.color],
                 };
 
                 model.Kenxels.Add(newVox);
 
                 ColorUtility.TryParseHtmlString(jsonObject.colors[tile.color], out newVox.Color);
             }
+
+            var newMesh = CreateRawMesh(model);
+
+            model.mesh = newMesh;
+            newMesh.name = $"{jsonObject.title}Mesh";
+
+            ctx.AddObjectToAsset("kenShapeMesh", newMesh);
+            ctx.AddObjectToAsset("kenShapeModel", model);
+            ctx.SetMainObject(model);
+        }
+
+        private Mesh CreateRawMesh(KenShapeModel model)
+        {
             var path = "Packages/com.qorthos.bracedframework/Editor/KenShapeImporter/KenShapeMeshDefs.asset";
             KenShapeMeshDef meshDefs = AssetDatabase.LoadAssetAtPath<KenShapeMeshDef>(path);
 
@@ -94,38 +111,34 @@ namespace BracedFramework
 
             List<Vector3> vertices = new List<Vector3>();
             List<Color> colors = new List<Color>();
-            List<Vector2> uvs = new List<Vector2>();
+            List<Vector4> uvs = new List<Vector4>();
+            List<Vector4> uv2s = new List<Vector4>();
             List<int> indices = new List<int>();
-            
+
             int indexCount = 0;
-            var zOffset = -(jsonObject.alignment - 1) / 32f;
 
-            foreach (var vox in model.Kenxels)
+            var modelRotation = Quaternion.Euler(new Vector3(RotateAxis ? -90 : 0f, 0, 0));
+
+            foreach (var kenxel in model.Kenxels)
             {
-                var refMesh = meshDefs.Meshes[vox.Shape];
+                var refMesh = meshDefs.Meshes[kenxel.Shape];
+                var kenxelRotation = Quaternion.Euler(new Vector3(0, 0, kenxel.Rotation));
 
-                var rotation = Quaternion.Euler(new Vector3(0, 0, vox.Rotation));
+                Vector3 kenxelPos = new Vector3(kenxel.Position.x, kenxel.Position.y, 0);
+                kenxelPos = modelRotation * kenxelPos;
 
-                foreach (var vertex in refMesh.vertices)
+                for (int i = 0; i < refMesh.vertexCount; i++)
                 {
-                    var newVertex = rotation * vertex;
-                    
-                    newVertex += vox.Position;
-                    newVertex.z += zOffset;
-                    newVertex.z *= 1 + (0.5f * (vox.Depth - 1f) * model.DepthMultiplier);
+                    var newVertex = kenxelRotation * refMesh.vertices[i];
+                    newVertex += kenxel.Position;
+                    newVertex.z *= kenxel.Depth;
+                    newVertex = modelRotation * newVertex;
 
-                    if (newVertex.z <=0 && UseSingleBackfaceColor)
-                    {
-                        colors.Add(BackfaceColor);
-                    }
-                    else
-                    {
-                        colors.Add(vox.Color);
-                    }
-
+                    colors.Add(kenxel.Color);
                     vertices.Add(newVertex);
-                    
-                    uvs.Add(new Vector2(1 + vox.HDRLevel, 0));
+
+                    uvs.Add(new Vector4(1 + kenxel.HDRIntensity, refMesh.normals[i].z < 0 ? 1 : 0, 0, 0));
+                    uv2s.Add(new Vector4(kenxelPos.x, kenxelPos.y, kenxelPos.z, 0));
                 }
 
                 List<int> newIndices = new List<int>(refMesh.GetIndices(0));
@@ -140,20 +153,20 @@ namespace BracedFramework
             }
 
             newMesh.vertices = vertices.ToArray();
-            newMesh.uv = uvs.ToArray();
+            newMesh.SetUVs(0, uvs);
+
+            //var backfaceCount = 0;
+            //uvs.ForEach(x => { if (x.y == 1) backfaceCount++; });
+            //Debug.Log($"BackfaceCount: {backfaceCount}");
+
+            //newMesh.SetUVs(2, uv2s);
             newMesh.colors = colors.ToArray();
             newMesh.SetIndices(indices.ToArray(), MeshTopology.Triangles, 0);
             newMesh.RecalculateBounds();
             newMesh.RecalculateNormals();
             newMesh.RecalculateTangents();
 
-
-            model.mesh = newMesh;
-            newMesh.name = $"{jsonObject.title}Mesh";
-
-            ctx.AddObjectToAsset("kenShapeMesh", newMesh);
-            ctx.AddObjectToAsset("kenShapeModel", model);
-            ctx.SetMainObject(model);
+            return newMesh;
         }
 
         public static string Unzip(byte[] bytes)

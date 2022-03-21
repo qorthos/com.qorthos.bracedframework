@@ -7,15 +7,15 @@ using UnityEngine;
 namespace BracedFramework
 { 
     [System.Serializable]
-    public class Kenxel
+    public class KenxelData
     {
         public Vector3 Position;
         public float Rotation;
-        public int Depth;
+        public float Depth;
         public Color Color;
         public int ColorIndex;
         public int Shape;
-        public int HDRLevel;
+        public int HDRIntensity;
         
     }
 }

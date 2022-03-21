@@ -11,7 +11,9 @@ namespace BracedFramework
     {
         public Mesh mesh;
         public Vector3Int Size;
-        public List<Kenxel> Kenxels = new List<Kenxel>();
+        public List<KenxelData> Kenxels = new List<KenxelData>();
         public float DepthMultiplier;
+        public bool UseBackfaceColor;
+        public Color BackfaceColor;
     }
 }

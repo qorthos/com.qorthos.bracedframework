@@ -51,7 +51,7 @@ namespace BracedFramework
         }
 		
 		// computes the length of a along b. b must be unit length
-        float ComponentAlong(Vector3 a, Vector3 b)
+        public static float ComponentAlong(Vector3 a, Vector3 b)
         {
             var dot = Vector3.Dot(b, a);
             return dot / a.magnitude;

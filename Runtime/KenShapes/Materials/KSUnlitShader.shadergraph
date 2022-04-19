@@ -1461,7 +1461,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "KSLightingSubGraph",
+    "m_Name": "KSUnlitLightTermSubGraph",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {

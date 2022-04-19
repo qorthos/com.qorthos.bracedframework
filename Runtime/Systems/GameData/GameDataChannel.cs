@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 using Yarn;
+
 namespace BracedFramework
 {
     public delegate void GameDataChannelEvent();

@@ -1,5 +1,5 @@
 How to add to your project: 
-PackageManager -> + -> Add Package From Git URL: https://github.com/qorthos/com.qorthos.bracedframework
+PackageManager -> + -> Add Package From Git URL: https://github.com/qorthos/com.qorthos.bracedframework.git
 
 
 # KenShape Support

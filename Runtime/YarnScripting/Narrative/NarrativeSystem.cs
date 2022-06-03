@@ -112,17 +112,19 @@ namespace BracedFramework
         }
     }
 
-    public class NarrativeRequestedGEM : YarnArgs
+    public class NarrativeRequestedGEM
     {
+        public Action OnComplete;
+        public string ErrorMessage;
         public string NodeName;
     }
 
-    public class NarrativeStartedGEM : EventArgs
+    public class NarrativeStartedGEM
     {
 
     }
 
-    public class NarrativeFinishedGEM : EventArgs
+    public class NarrativeFinishedGEM
     {
 
     }

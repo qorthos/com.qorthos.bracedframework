@@ -31,7 +31,7 @@ namespace BracedFramework
             _broadcastEventLib.Clear();
         }
 
-        public void Broadcast<T>(T args) where T : EventArgs
+        public void Broadcast<T>(T args)
         {
             var type = typeof(T);
 
@@ -44,7 +44,7 @@ namespace BracedFramework
             ((BroadcastEvent<T>)_broadcastEventLib[type]).Invoke(args);
         }
 
-        public void RegisterListener<T>(UnityAction<T> callback) where T : EventArgs
+        public void RegisterListener<T>(UnityAction<T> callback)
         {
             var type = typeof(T);
 
@@ -56,7 +56,7 @@ namespace BracedFramework
             ((BroadcastEvent<T>)_broadcastEventLib[type]).AddListener(callback);
         }
 
-        public void RemoveListener<T>(UnityAction<T> callback) where T : EventArgs
+        public void RemoveListener<T>(UnityAction<T> callback)
         {
             var type = typeof(T);
 

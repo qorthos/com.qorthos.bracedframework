@@ -7,17 +7,17 @@ using UnityEngine;
 
 namespace BracedFramework
 {
-    public class CameraSnapGEM : YarnArgs
+    public struct CameraSnapGEM
     {
         public string TargetName;
     }
 
-    public class GameQuitGEM : EventArgs
+    public struct GameQuitGEM
     {
 
     }
 
-    public class YarnArgs : EventArgs
+    public struct YarnArgs
     {
         public Action OnComplete;
         public string ErrorMessage;

@@ -101,8 +101,10 @@ namespace BracedFramework
         }
     }
 
-    public class DialogueRequestedGEM : YarnArgs
+    public class DialogueRequestedGEM
     {
+        public Action OnComplete;
+        public string ErrorMessage;
         public string NodeName;
     }
 

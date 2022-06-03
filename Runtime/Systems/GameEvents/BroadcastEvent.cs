@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace BracedFramework
 {
-    public class BroadcastEvent<T> : UnityEvent<T>, IBroadcastEvent where T : System.EventArgs
+    public class BroadcastEvent<T> : UnityEvent<T>, IBroadcastEvent
     {
         public void Clear()
         {

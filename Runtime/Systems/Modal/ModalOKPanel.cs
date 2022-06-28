@@ -55,5 +55,9 @@ namespace BracedFramework
             OnFinished?.Invoke();
         }
 
+        public void CustomSet(object parameters)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

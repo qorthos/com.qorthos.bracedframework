@@ -48,5 +48,9 @@ namespace BracedFramework
             OnFinished?.Invoke();
         }
 
+        public virtual void CustomSet(object parameters)
+        {
+
+        }
     }
 }

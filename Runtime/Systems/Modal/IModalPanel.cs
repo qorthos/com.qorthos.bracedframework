@@ -10,5 +10,7 @@ namespace BracedFramework
     public interface IModalPanel : IShowable
     {
         UnityEvent OnFinished { get; }
+
+        void CustomSet(object parameters);
     }
 }

@@ -48,6 +48,7 @@ namespace BracedFramework
             var prefab = arg0.Prefab;
             ShownObject = Instantiate(prefab, Canvas.transform);
             var newPanel = ShownObject.GetComponent<IModalPanel>();
+            newPanel.CustomSet(arg0.CustomParameters);
             newPanel.Show();
             newPanel.OnFinished.AddListener(OnPanelFinished);
         }
@@ -71,6 +72,7 @@ namespace BracedFramework
     public class ShowCustomModalGEM : EventArgs
     {
         public GameObject Prefab;
+        public object CustomParameters;
         public Action OKAction;
     }
 }
